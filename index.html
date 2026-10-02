@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Traylaz — Best-Of Curated Movie & Trailer Taxonomy</title>
+  <meta name="description" content="Discover the curated top 15-20 movies per genre categorized with rich taxonomy tags, custom filtering, and HD trailers.">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header class="header">
+    <div class="header-container">
+      <a href="#" class="logo" id="logo-link">
+        <i class="fa-solid fa-clapperboard" style="color: var(--accent-purple);"></i>
+        <span>Traylaz</span>
+        <span class="logo-badge">Best 15–20</span>
+      </a>
+
+      <div class="search-box">
+        <i class="fa-solid fa-magnifying-glass search-icon"></i>
+        <input type="text" id="search-input" class="search-input" placeholder="Search by title, director, or #tag...">
+      </div>
+
+      <div class="header-actions">
+        <button class="btn btn-primary" id="btn-add-movie">
+          <i class="fa-solid fa-plus"></i>
+          <span>Add Movie</span>
+        </button>
+        <button class="btn" id="btn-tag-manager">
+          <i class="fa-solid fa-tags" style="color: var(--accent-cyan);"></i>
+          <span>Taxonomy Engine</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- HERO SECTION -->
+  <section class="hero">
+    <h1 class="hero-title" id="hero-heading">Curated Masterpiece Taxonomy</h1>
+    <p class="hero-subtitle">
+      Explore definitive hand-picked collections across 10 distinct genres. Slice through rich taxonomy tags like <span style="color:var(--accent-purple)">#mind-bending</span>, <span style="color:var(--accent-cyan)">#visual-spectacle</span>, <span style="color:var(--accent-gold)">#oscar-winner</span>, and <span style="color:var(--accent-pink)">#cyberpunk</span>.
+    </p>
+
+    <!-- Genre Selector Pill Bar -->
+    <div class="genre-bar-container">
+      <div class="genre-bar-header">
+        <span class="genre-bar-title"><i class="fa-solid fa-sliders"></i> Featured Genres (10 Categories)</span>
+        <span id="active-genre-indicator" style="font-size:0.85rem; color:var(--text-muted)">10 Active Genres</span>
+      </div>
+      <div class="genre-pills" id="genre-pills-container">
+        <!-- Dynamic Genre Pills Rendered Here -->
+      </div>
+    </div>
+  </section>
+
+  <!-- MAIN LAYOUT: SIDEBAR + FEED -->
+  <div class="main-layout">
+    
+    <!-- LEFT TAXONOMY SIDEBAR -->
+    <aside class="taxonomy-sidebar">
+      <div class="sidebar-title">
+        <span><i class="fa-solid fa-filter" style="color: var(--accent-purple)"></i> Taxonomy Filters</span>
+        <button class="clear-btn" id="btn-clear-filters">Reset All</button>
+      </div>
+
+      <!-- Active Filters Display -->
+      <div id="active-filters-box" style="margin-bottom: 1.25rem; display: none;">
+        <div class="taxonomy-section-title">Active Tags</div>
+        <div class="tag-cloud" id="active-tags-cloud"></div>
+      </div>
+
+      <!-- Faceted Tag Clouds by Category -->
+      <div id="taxonomy-categories-container">
+        <!-- Tag Categories dynamically inserted -->
+      </div>
+    </aside>
+
+    <!-- RIGHT MOVIE FEED CONTENT -->
+    <main class="feed-content">
+      <div class="feed-header">
+        <div>
+          <h2 class="feed-title" id="feed-title-text">
+            <span>Sci-Fi Masterpieces</span>
+          </h2>
+          <p class="feed-subtitle" id="feed-count-text">Showing curated movies</p>
+        </div>
+
+        <div style="display: flex; align-items: center; gap: 0.75rem;">
+          <span style="font-size: 0.85rem; color: var(--text-muted);">Sort by:</span>
+          <select id="sort-select" class="sort-select">
+            <option value="rank">Curated Rank (#1 to #20)</option>
+            <option value="rating">Highest IMDb Rating</option>
+            <option value="year-desc">Release Year (Newest)</option>
+            <option value="title">Title (A-Z)</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- MOVIE CARDS GRID -->
+      <div class="movie-grid" id="movie-grid">
+        <!-- Dynamic Cards Inserted Here -->
+      </div>
+    </main>
+  </div>
+
+  <!-- CINEMATIC TRAILER MODAL -->
+  <div class="modal-backdrop" id="trailer-modal">
+    <div class="modal-container">
+      <button class="modal-close" id="modal-close-btn" aria-label="Close modal">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+
+      <!-- Video Player -->
+      <div class="video-wrapper">
+        <iframe id="modal-iframe" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+      </div>
+
+      <!-- Movie Details -->
+      <div class="modal-details">
+        <div class="modal-header-row">
+          <div>
+            <h2 class="modal-title" id="modal-movie-title">Movie Title</h2>
+            <div class="modal-meta-bar" id="modal-movie-meta">
+              <!-- Meta tags -->
+            </div>
+          </div>
+        </div>
+
+        <p class="modal-synopsis" id="modal-movie-synopsis"></p>
+
+        <div>
+          <h4 style="font-size: 0.85rem; text-transform: uppercase; color: var(--text-muted); margin-bottom: 0.5rem;">Taxonomy Classification</h4>
+          <div class="tag-cloud" id="modal-movie-tags"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ADD MOVIE MODAL -->
+  <div class="modal-backdrop" id="add-movie-modal">
+    <div class="modal-container" style="max-width: 650px; padding: 2rem;">
+      <button class="modal-close" id="add-movie-modal-close">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+      <h2 style="font-size: 1.5rem; font-weight: 800; margin-bottom: 0.5rem;"><i class="fa-solid fa-plus-circle" style="color: var(--accent-purple)"></i> Add Movie to Genre & Taxonomy</h2>
+      <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 1.5rem;">
+        Expand any genre section by adding a new masterpiece with custom taxonomy tags.
+      </p>
+
+      <form id="add-movie-form" style="display: flex; flex-direction: column; gap: 1rem;">
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+          <div>
+            <label style="font-size:0.8rem; font-weight:700; color:var(--text-muted);">Genre Section</label>
+            <select id="form-genre" class="sort-select" style="width:100%; margin-top:0.25rem;" required></select>
+          </div>
+          <div>
+            <label style="font-size:0.8rem; font-weight:700; color:var(--text-muted);">Rank (#1 to #20)</label>
+            <input type="number" id="form-rank" min="1" max="20" value="1" class="search-input" style="border-radius:var(--radius-md); margin-top:0.25rem;" required>
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 1rem;">
+          <div>
+            <label style="font-size:0.8rem; font-weight:700; color:var(--text-muted);">Movie Title</label>
+            <input type="text" id="form-title" class="search-input" placeholder="e.g. Tenet" style="border-radius:var(--radius-md); margin-top:0.25rem;" required>
+          </div>
+          <div>
+            <label style="font-size:0.8rem; font-weight:700; color:var(--text-muted);">Year</label>
+            <input type="number" id="form-year" value="2024" class="search-input" style="border-radius:var(--radius-md); margin-top:0.25rem;" required>
+          </div>
+          <div>
+            <label style="font-size:0.8rem; font-weight:700; color:var(--text-muted);">IMDb Rating</label>
+            <input type="number" step="0.1" id="form-rating" value="8.5" class="search-input" style="border-radius:var(--radius-md); margin-top:0.25rem;" required>
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+          <div>
+            <label style="font-size:0.8rem; font-weight:700; color:var(--text-muted);">Director</label>
+            <input type="text" id="form-director" class="search-input" placeholder="e.g. Christopher Nolan" style="border-radius:var(--radius-md); margin-top:0.25rem;" required>
+          </div>
+          <div>
+            <label style="font-size:0.8rem; font-weight:700; color:var(--text-muted);">YouTube Video ID</label>
+            <input type="text" id="form-trailer" class="search-input" placeholder="e.g. LdOM0x0XDac" style="border-radius:var(--radius-md); margin-top:0.25rem;" required>
+          </div>
+        </div>
+
+        <div>
+          <label style="font-size:0.8rem; font-weight:700; color:var(--text-muted);">Synopsis</label>
+          <textarea id="form-synopsis" class="search-input" rows="3" style="border-radius:var(--radius-md); margin-top:0.25rem;" placeholder="Brief plot summary..." required></textarea>
+        </div>
+
+        <div>
+          <label style="font-size:0.8rem; font-weight:700; color:var(--text-muted);">Taxonomy Tags (Comma separated)</label>
+          <input type="text" id="form-tags" class="search-input" placeholder="e.g. mind-bending, oscar-winner, visual-spectacle" style="border-radius:var(--radius-md); margin-top:0.25rem;">
+        </div>
+
+        <button type="submit" class="btn btn-primary" style="margin-top: 0.5rem; justify-content: center;"><i class="fa-solid fa-check"></i> Add Movie to Dataset</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- TAXONOMY MANAGER MODAL -->
+  <div class="modal-backdrop" id="taxonomy-modal">
+    <div class="modal-container" style="max-width: 600px; padding: 2rem;">
+      <button class="modal-close" id="taxonomy-modal-close">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+      <h2 style="font-size: 1.5rem; font-weight: 800; margin-bottom: 0.5rem;"><i class="fa-solid fa-tags" style="color: var(--accent-purple)"></i> Taxonomy Manager</h2>
+      <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 1.5rem;">
+        View, search, or add custom tags to classify movies across genres.
+      </p>
+
+      <div style="display: flex; gap: 0.5rem; margin-bottom: 1.5rem;">
+        <input type="text" id="new-tag-input" class="search-input" placeholder="New tag name e.g. #space-opera..." style="border-radius: var(--radius-md);">
+        <button class="btn btn-primary" id="btn-add-tag"><i class="fa-solid fa-plus"></i> Add Tag</button>
+      </div>
+
+      <h4 class="taxonomy-section-title">All System Tags</h4>
+      <div class="tag-cloud" id="manager-all-tags" style="max-height: 250px; overflow-y: auto;"></div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
