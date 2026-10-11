@@ -3,9 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Traylaz — Best-Of Curated Movie & Trailer Taxonomy</title>
-  <meta name="description" content="Discover the curated top 15-20 movies per genre categorized with rich taxonomy tags, custom filtering, and HD trailers.">
-  <link rel="stylesheet" href="styles.css">
+  <title>CineVault — Curated Movie & Trailer Taxonomy</title>
+  <meta name="description" content="Discover curated top movies per genre categorized with rich taxonomy tags, custom filtering, and HD trailers.">
+  <link rel="stylesheet" href="styles.css?v=3.0">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
@@ -15,21 +15,27 @@
     <div class="header-container">
       <a href="#" class="logo" id="logo-link">
         <i class="fa-solid fa-clapperboard" style="color: var(--accent-purple);"></i>
-        <span>Traylaz</span>
-        <span class="logo-badge">Best 15–20</span>
+        <span>CineVault</span>
       </a>
 
       <div class="search-box">
         <i class="fa-solid fa-magnifying-glass search-icon"></i>
-        <input type="text" id="search-input" class="search-input" placeholder="Search by title, director, or #tag...">
+        <input type="text" id="search-input" class="search-input" placeholder="Search movies, directors, or #tags...">
       </div>
 
       <div class="header-actions">
-        <button class="btn btn-primary" id="btn-add-movie">
+        <span class="admin-badge" id="admin-badge" style="display: none;">
+          <i class="fa-solid fa-shield-halved"></i> Admin Active
+        </span>
+        <button class="btn" id="btn-admin-toggle" title="Admin Access" style="white-space: nowrap; flex-shrink: 0;">
+          <i class="fa-solid fa-lock" id="admin-icon" style="color: var(--accent-gold);"></i>
+          <span id="admin-btn-label">Admin</span>
+        </button>
+        <button class="btn btn-primary" id="btn-add-movie" style="white-space: nowrap; flex-shrink: 0;">
           <i class="fa-solid fa-plus"></i>
           <span>Add Movie</span>
         </button>
-        <button class="btn" id="btn-tag-manager">
+        <button class="btn" id="btn-tag-manager" style="white-space: nowrap; flex-shrink: 0;">
           <i class="fa-solid fa-tags" style="color: var(--accent-cyan);"></i>
           <span>Taxonomy Engine</span>
         </button>
@@ -37,48 +43,62 @@
     </div>
   </header>
 
-  <!-- HERO SECTION -->
-  <section class="hero">
-    <h1 class="hero-title" id="hero-heading">Curated Masterpiece Taxonomy</h1>
-    <p class="hero-subtitle">
-      Explore definitive hand-picked collections across 10 distinct genres. Slice through rich taxonomy tags like <span style="color:var(--accent-purple)">#mind-bending</span>, <span style="color:var(--accent-cyan)">#visual-spectacle</span>, <span style="color:var(--accent-gold)">#oscar-winner</span>, and <span style="color:var(--accent-pink)">#cyberpunk</span>.
-    </p>
+  <!-- HORIZONTAL HOVER FILTER RIBBON (SLIDE-DOWN) -->
+  <div class="filter-ribbon-wrapper" id="filter-ribbon-wrapper">
+    <!-- Horizontal Hover Trigger directly under header -->
+    <div class="filter-ribbon-trigger" id="filter-ribbon-trigger">
+      <i class="fa-solid fa-sliders" style="color: var(--accent-purple);"></i>
+      <span>Taxonomy & Genre Filters</span>
+      <span class="ribbon-count-badge" id="active-filter-count-badge" style="display: none;">0</span>
+      <i class="fa-solid fa-chevron-down trigger-chevron"></i>
+    </div>
 
-    <!-- Genre Selector Pill Bar -->
-    <div class="genre-bar-container">
-      <div class="genre-bar-header">
-        <span class="genre-bar-title"><i class="fa-solid fa-sliders"></i> Featured Genres (10 Categories)</span>
-        <span id="active-genre-indicator" style="font-size:0.85rem; color:var(--text-muted)">10 Active Genres</span>
-      </div>
-      <div class="genre-pills" id="genre-pills-container">
-        <!-- Dynamic Genre Pills Rendered Here -->
+    <!-- Dropdown Ribbon Panel -->
+    <div class="filter-ribbon-panel" id="filter-ribbon-panel">
+      <div class="ribbon-inner">
+        <div class="ribbon-header">
+          <div class="ribbon-title">
+            <i class="fa-solid fa-layer-group" style="color: var(--accent-cyan);"></i>
+            <span>Curated Taxonomy & Genre Navigation</span>
+          </div>
+          <div class="ribbon-header-actions">
+            <button class="clear-btn" id="btn-clear-filters" style="display: none;">Reset All Filters</button>
+            <button class="sidebar-action-btn" id="btn-pin-ribbon" title="Keep Pinned / Auto-close">
+              <i class="fa-solid fa-thumbtack"></i>
+            </button>
+            <button class="sidebar-action-btn" id="btn-close-ribbon" title="Close Panel">
+              <i class="fa-solid fa-xmark"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- Featured Genres Row -->
+        <div class="ribbon-genres-section">
+          <div class="ribbon-section-label">
+            <i class="fa-solid fa-sparkles" style="color: var(--accent-gold);"></i> Featured Genres
+          </div>
+          <div class="genre-ribbon-pills" id="genre-pills-container">
+            <!-- Dynamic Genre Pills Rendered Here -->
+          </div>
+        </div>
+
+        <!-- Active Filter Tags Display -->
+        <div id="active-filters-box" class="ribbon-active-box" style="display: none;">
+          <div class="ribbon-section-label">Active Filters:</div>
+          <div class="tag-cloud" id="active-tags-cloud"></div>
+        </div>
+
+        <!-- Multi-Column Taxonomy Tag Categories -->
+        <div class="ribbon-taxonomy-grid" id="taxonomy-categories-container">
+          <!-- Collapsible Tag Categories dynamically inserted -->
+        </div>
       </div>
     </div>
-  </section>
+  </div>
+  <div class="ribbon-backdrop" id="ribbon-backdrop"></div>
 
-  <!-- MAIN LAYOUT: SIDEBAR + FEED -->
-  <div class="main-layout">
-    
-    <!-- LEFT TAXONOMY SIDEBAR -->
-    <aside class="taxonomy-sidebar">
-      <div class="sidebar-title">
-        <span><i class="fa-solid fa-filter" style="color: var(--accent-purple)"></i> Taxonomy Filters</span>
-        <button class="clear-btn" id="btn-clear-filters">Reset All</button>
-      </div>
-
-      <!-- Active Filters Display -->
-      <div id="active-filters-box" style="margin-bottom: 1.25rem; display: none;">
-        <div class="taxonomy-section-title">Active Tags</div>
-        <div class="tag-cloud" id="active-tags-cloud"></div>
-      </div>
-
-      <!-- Faceted Tag Clouds by Category -->
-      <div id="taxonomy-categories-container">
-        <!-- Tag Categories dynamically inserted -->
-      </div>
-    </aside>
-
-    <!-- RIGHT MOVIE FEED CONTENT -->
+  <!-- FULL-WIDTH MAIN LAYOUT: FEED CONTENT -->
+  <div class="main-layout" id="main-layout">
     <main class="feed-content">
       <div class="feed-header">
         <div>
@@ -88,10 +108,30 @@
           <p class="feed-subtitle" id="feed-count-text">Showing curated movies</p>
         </div>
 
-        <div style="display: flex; align-items: center; gap: 0.75rem;">
+        <div style="display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap;">
+          <!-- View Switcher Controls -->
+          <div class="view-toggle-group" id="view-toggle-group" title="Switch catalog display mode">
+            <button class="view-toggle-btn active" id="btn-view-standard" data-view="standard" title="Standard Grid (5 across)">
+              <i class="fa-solid fa-table-cells-large"></i>
+            </button>
+            <button class="view-toggle-btn" id="btn-view-compact" data-view="compact" title="Compact Grid (Dense / Smaller tiles)">
+              <i class="fa-solid fa-table-cells"></i>
+            </button>
+            <button class="view-toggle-btn" id="btn-view-rows" data-view="rows" title="2-Column Table Rows (Detailed list)">
+              <i class="fa-solid fa-table-columns"></i>
+            </button>
+          </div>
+
+          <div class="view-toggle-divider"></div>
+
+          <button class="btn btn-shuffle" id="btn-shuffle" title="Shuffle / Randomize Catalog">
+            <i class="fa-solid fa-dice" style="color: var(--accent-gold);"></i>
+            <span>Shuffle Mix</span>
+          </button>
           <span style="font-size: 0.85rem; color: var(--text-muted);">Sort by:</span>
           <select id="sort-select" class="sort-select">
-            <option value="rank">Curated Rank (#1 to #20)</option>
+            <option value="random">Random Discovery (Mix)</option>
+            <option value="rank">Curated Rank</option>
             <option value="rating">Highest IMDb Rating</option>
             <option value="year-desc">Release Year (Newest)</option>
             <option value="title">Title (A-Z)</option>
@@ -102,6 +142,18 @@
       <!-- MOVIE CARDS GRID -->
       <div class="movie-grid" id="movie-grid">
         <!-- Dynamic Cards Inserted Here -->
+      </div>
+
+      <!-- Infinite Scroll Sentinel -->
+      <div id="scroll-sentinel" class="scroll-sentinel">
+        <div id="infinite-loading-spinner" class="infinite-spinner" style="display: none;">
+          <i class="fa-solid fa-circle-notch fa-spin"></i>
+          <span>Loading more curated films...</span>
+        </div>
+        <div id="catalog-end-message" class="catalog-end" style="display: none;">
+          <i class="fa-solid fa-check-circle" style="color: var(--accent-cyan);"></i>
+          <span>Showing all films in this selection.</span>
+        </div>
       </div>
     </main>
   </div>
@@ -114,8 +166,18 @@
       </button>
 
       <!-- Video Player -->
-      <div class="video-wrapper">
-        <iframe id="modal-iframe" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+      <div class="video-wrapper" id="video-wrapper">
+        <iframe id="modal-iframe" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen" allowfullscreen></iframe>
+        <!-- Double-click / Click Gesture Overlay -->
+        <div class="video-click-overlay" id="video-click-overlay" title="Double-click to toggle Fullscreen • Click to play/pause">
+          <div class="video-gesture-indicator" id="video-gesture-indicator">
+            <i class="fa-solid fa-expand"></i>
+          </div>
+        </div>
+        <!-- Quick Fullscreen Button in Player -->
+        <button class="video-fullscreen-btn" id="video-fullscreen-btn" title="Toggle Fullscreen (or double-click video)">
+          <i class="fa-solid fa-expand"></i>
+        </button>
       </div>
 
       <!-- Movie Details -->
@@ -131,8 +193,25 @@
 
         <p class="modal-synopsis" id="modal-movie-synopsis"></p>
 
+        <!-- Curated Genres Section -->
+        <div style="margin-bottom: 1.25rem;">
+          <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.6rem; flex-wrap: wrap; gap: 0.5rem;">
+            <h4 style="font-size: 0.825rem; text-transform: uppercase; color: var(--text-muted); letter-spacing: 0.06em; font-weight: 700;">
+              <i class="fa-solid fa-layer-group" style="color: var(--accent-gold); margin-right: 0.4rem;"></i> Curated Genres
+            </h4>
+            <span style="font-size: 0.75rem; color: var(--text-muted);"><i class="fa-solid fa-arrow-pointer"></i> Click genre to view category</span>
+          </div>
+          <div class="tag-cloud" id="modal-movie-genres"></div>
+        </div>
+
+        <!-- Taxonomy Tags Section -->
         <div>
-          <h4 style="font-size: 0.85rem; text-transform: uppercase; color: var(--text-muted); margin-bottom: 0.5rem;">Taxonomy Classification</h4>
+          <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.6rem; flex-wrap: wrap; gap: 0.5rem;">
+            <h4 style="font-size: 0.825rem; text-transform: uppercase; color: var(--text-muted); letter-spacing: 0.06em; font-weight: 700;">
+              <i class="fa-solid fa-tags" style="color: var(--accent-cyan); margin-right: 0.4rem;"></i> Taxonomy Tags
+            </h4>
+            <span style="font-size: 0.75rem; color: var(--accent-purple); font-weight: 600;"><i class="fa-solid fa-magnifying-glass"></i> Click tag to filter search</span>
+          </div>
           <div class="tag-cloud" id="modal-movie-tags"></div>
         </div>
       </div>
@@ -216,11 +295,42 @@
 
       <div style="display: flex; gap: 0.5rem; margin-bottom: 1.5rem;">
         <input type="text" id="new-tag-input" class="search-input" placeholder="New tag name e.g. #space-opera..." style="border-radius: var(--radius-md);">
-        <button class="btn btn-primary" id="btn-add-tag"><i class="fa-solid fa-plus"></i> Add Tag</button>
+        <button class="btn btn-primary" id="btn-add-tag" style="white-space: nowrap; flex-shrink: 0;"><i class="fa-solid fa-plus"></i> Add Tag</button>
       </div>
 
       <h4 class="taxonomy-section-title">All System Tags</h4>
       <div class="tag-cloud" id="manager-all-tags" style="max-height: 250px; overflow-y: auto;"></div>
+    </div>
+  </div>
+
+  <!-- ADMIN AUTHENTICATION MODAL -->
+  <div class="modal-backdrop" id="admin-modal">
+    <div class="modal-container" style="max-width: 440px; padding: 2rem;">
+      <button class="modal-close" id="admin-modal-close">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+      <h2 style="font-size: 1.4rem; font-weight: 800; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.6rem;">
+        <i class="fa-solid fa-shield-halved" style="color: var(--accent-purple);"></i>
+        <span>Admin Authentication</span>
+      </h2>
+      <p style="color: var(--text-secondary); font-size: 0.85rem; margin-bottom: 1.25rem; line-height: 1.45;">
+        Enter your admin passphrase to unlock curation controls (re-import posters, delete titles, manage taxonomy).
+      </p>
+
+      <form id="admin-auth-form">
+        <div style="margin-bottom: 1.25rem;">
+          <label style="font-size: 0.8rem; font-weight: 700; color: var(--text-muted); display: block; margin-bottom: 0.35rem;">Admin Passphrase</label>
+          <input type="password" id="admin-passphrase-input" class="search-input" placeholder="Enter passphrase..." style="width: 100%; border-radius: var(--radius-md);" required autofocus>
+          <div id="admin-auth-error" style="color: #ef4444; font-size: 0.8rem; margin-top: 0.4rem; display: none;">
+            <i class="fa-solid fa-circle-exclamation"></i> Incorrect passphrase.
+          </div>
+        </div>
+
+        <div style="display: flex; justify-content: flex-end; gap: 0.75rem;">
+          <button type="button" class="btn" id="btn-admin-cancel">Cancel</button>
+          <button type="submit" class="btn btn-primary"><i class="fa-solid fa-key"></i> Authenticate</button>
+        </div>
+      </form>
     </div>
   </div>
 
