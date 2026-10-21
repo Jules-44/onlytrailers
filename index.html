@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>CineVault — Curated Movie & Trailer Taxonomy</title>
   <meta name="description" content="Discover curated top movies per genre categorized with rich taxonomy tags, custom filtering, and HD trailers.">
-  <link rel="stylesheet" href="styles.css?v=3.0">
+  <link rel="stylesheet" href="styles.css?v=3.5">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
@@ -35,7 +35,7 @@
           <i class="fa-solid fa-plus"></i>
           <span>Add Movie</span>
         </button>
-        <button class="btn" id="btn-tag-manager" style="white-space: nowrap; flex-shrink: 0;">
+        <button class="btn" id="btn-tag-manager" style="display: none !important; white-space: nowrap; flex-shrink: 0;">
           <i class="fa-solid fa-tags" style="color: var(--accent-cyan);"></i>
           <span>Taxonomy Engine</span>
         </button>
@@ -45,12 +45,22 @@
 
   <!-- HORIZONTAL HOVER FILTER RIBBON (SLIDE-DOWN) -->
   <div class="filter-ribbon-wrapper" id="filter-ribbon-wrapper">
-    <!-- Horizontal Hover Trigger directly under header -->
-    <div class="filter-ribbon-trigger" id="filter-ribbon-trigger">
-      <i class="fa-solid fa-sliders" style="color: var(--accent-purple);"></i>
-      <span>Taxonomy & Genre Filters</span>
-      <span class="ribbon-count-badge" id="active-filter-count-badge" style="display: none;">0</span>
-      <i class="fa-solid fa-chevron-down trigger-chevron"></i>
+    <!-- Horizontal Hover Trigger full-width directly under header -->
+    <div class="filter-ribbon-trigger" id="filter-ribbon-trigger" title="Hover or click to browse Taxonomy & Genre Filters">
+      <div class="ribbon-trigger-col ribbon-trigger-left">
+        <i class="fa-solid fa-sliders" style="color: var(--accent-purple);"></i>
+        <span>Taxonomy & Genre Filters</span>
+      </div>
+      <div class="ribbon-trigger-col ribbon-trigger-center">
+        <span class="ribbon-trigger-hint">
+          <i class="fa-solid fa-sparkles" style="color: var(--accent-gold);"></i> Explore 18 Curated Genres & 60+ Taxonomy Tags
+        </span>
+      </div>
+      <div class="ribbon-trigger-col ribbon-trigger-right">
+        <span class="ribbon-count-badge" id="active-filter-count-badge" style="display: none;">0</span>
+        <span class="ribbon-trigger-action-text">Explore</span>
+        <i class="fa-solid fa-chevron-down trigger-chevron"></i>
+      </div>
     </div>
 
     <!-- Dropdown Ribbon Panel -->
@@ -63,12 +73,6 @@
           </div>
           <div class="ribbon-header-actions">
             <button class="clear-btn" id="btn-clear-filters" style="display: none;">Reset All Filters</button>
-            <button class="sidebar-action-btn" id="btn-pin-ribbon" title="Keep Pinned / Auto-close">
-              <i class="fa-solid fa-thumbtack"></i>
-            </button>
-            <button class="sidebar-action-btn" id="btn-close-ribbon" title="Close Panel">
-              <i class="fa-solid fa-xmark"></i>
-            </button>
           </div>
         </div>
 

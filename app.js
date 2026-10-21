@@ -4,7 +4,7 @@
 (function () {
   'use strict';
 
-  const DATA = window.CINEVAULT_DATA || window.TRAYLAZ_DATA;
+  const DATA = window.CINEVAULT_DATA || window.ONLYTRAILERS_DATA;
 
   // --- STATE MANAGEMENT ---
   const state = {
@@ -32,8 +32,6 @@
   const filterRibbonTrigger = document.getElementById('filter-ribbon-trigger');
   const filterRibbonPanel = document.getElementById('filter-ribbon-panel');
   const ribbonBackdrop = document.getElementById('ribbon-backdrop');
-  const btnPinRibbon = document.getElementById('btn-pin-ribbon');
-  const btnCloseRibbon = document.getElementById('btn-close-ribbon');
   const activeFilterCountBadge = document.getElementById('active-filter-count-badge');
   const genrePillsContainer = document.getElementById('genre-pills-container');
   const taxonomyCategoriesContainer = document.getElementById('taxonomy-categories-container');
@@ -1182,7 +1180,16 @@
       clearAllFilters();
     });
 
-    // --- HORIZONTAL RIBBON CONTROLS ---
+    // --- HORIZONTAL RIBBON CONTROLS & GAPLESS ALIGNMENT ---
+    function syncRibbonPosition() {
+      const header = document.querySelector('.header');
+      if (header && filterRibbonWrapper) {
+        filterRibbonWrapper.style.top = `${header.offsetHeight}px`;
+      }
+    }
+    syncRibbonPosition();
+    window.addEventListener('resize', syncRibbonPosition);
+
     if (filterRibbonTrigger && filterRibbonPanel) {
       filterRibbonTrigger.addEventListener('click', () => {
         filterRibbonPanel.classList.toggle('open');
@@ -1192,27 +1199,9 @@
       });
     }
 
-    if (btnPinRibbon && filterRibbonPanel) {
-      btnPinRibbon.addEventListener('click', (e) => {
-        e.stopPropagation();
-        filterRibbonPanel.classList.toggle('pinned');
-        btnPinRibbon.classList.toggle('active', filterRibbonPanel.classList.contains('pinned'));
-      });
-    }
-
-    if (btnCloseRibbon && filterRibbonPanel) {
-      btnCloseRibbon.addEventListener('click', (e) => {
-        e.stopPropagation();
-        filterRibbonPanel.classList.remove('open', 'pinned');
-        if (btnPinRibbon) btnPinRibbon.classList.remove('active');
-        if (ribbonBackdrop) ribbonBackdrop.classList.remove('active');
-      });
-    }
-
     if (ribbonBackdrop && filterRibbonPanel) {
       ribbonBackdrop.addEventListener('click', () => {
         filterRibbonPanel.classList.remove('open', 'pinned');
-        if (btnPinRibbon) btnPinRibbon.classList.remove('active');
         ribbonBackdrop.classList.remove('active');
       });
     }
