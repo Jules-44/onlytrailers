@@ -1,0 +1,13 @@
+# Offline data preparation and scraper scripts
+*.py
+build_1000_movies.js
+fetch_expansion.js
+fetch_movies.js
+update_trailers.js
+candidates_batch.json
+existing_titles.json
+master_expansion_pool.json
+
+# Version control & internal tools
+.git
+.agents
